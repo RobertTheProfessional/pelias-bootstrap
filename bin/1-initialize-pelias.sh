@@ -11,7 +11,8 @@ sudo chmod 0440 /etc/sudoers.d/pelias-admin-user
 sudo su pelias && cd ~/
 
 # Pull the Bootstrap from GitHub
-mkdir Pelias
+mkdir ~/Pelias && cd ~/Pelias
+git clone https://RobertTheProfessional/pelias-bootstrap
 
 # Create the Pelias resources folder
 mkdir ~/.pelias && cd ~/.pelias
