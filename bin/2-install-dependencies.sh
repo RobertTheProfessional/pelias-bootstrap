@@ -8,11 +8,10 @@ set -e
 TOOLS=$HOME/.pelias
 
 if [ -d $TOOLS ]; then
-    echo "TOOLS EXISTS!" #rm -r $TOOLS/
+    rm -r $TOOLS/
 fi
 
 mkdir -p $TOOLS
-
 chmod 2775 $TOOLS
 
 #=========================================
@@ -22,10 +21,14 @@ chmod 2775 $TOOLS
 set -x
 set -e
 
-# Create the Pelias resources folder
-mkdir $TOOLS && cd $TOOLS
+apt-get update
+apt-get install -y --no-install-recommends git unzip python python-pip python-dev build-essential gdal-bin rlwrap golang-go
+
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs
 
 # Download Pelias Repositories
+cd $TOOLS
 for repository in schema api whosonfirst geonames openaddresses openstreetmap; do
     git clone http://github.com/pelias/${repository}.git
     pushd $repository > /dev/null
@@ -33,12 +36,6 @@ for repository in schema api whosonfirst geonames openaddresses openstreetmap; d
     npm install
     popd > /dev/null
 done
-
-apt-get update
-apt-get install -y --no-install-recommends git unzip python python-pip python-dev build-essential gdal-bin rlwrap golang-go
-
-curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-sudo apt-get install -y nodejs
 
 git clone https://github.com/whosonfirst/go-whosonfirst-clone.git $HOME/wof-clone
 cd $HOME/wof-clone
