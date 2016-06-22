@@ -29,7 +29,12 @@ sudo apt-get install -y nodejs
 
 # Create nodejs group for npm access
 sudo addgroup nodejs
-sudo usermod -a -G nodejs $(whoami)
+
+if [ $(getent group nodejs) ]; then
+  echo "nodejs group already exists"
+else
+  sudo usermod -a -G nodejs $(whoami)
+fi
 
 # Update npm global directory permissions
 sudo chown -R root:nodejs $(npm config get prefix) && sudo chmod -R 775 $(npm config get prefix)  
