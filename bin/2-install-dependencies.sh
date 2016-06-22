@@ -36,8 +36,11 @@ fi
 
 sudo usermod -a -G nodejs $(whoami)
 
-# Update npm global directory permissions
-sudo chown -R root:nodejs $(npm config get prefix) && sudo chmod -R 775 $(npm config get prefix)  
+# Update npm global directory
+mkdir $HOME/.npm-packages
+echo 'prefix=~/.npm-packages' > ~/.npmrc
+echo 'NPM_PACKAGES="~/.npm-packages"' >> ~/.bashrc
+echo 'PATH="$NPM_PACKAGES/bin:$PATH"' >> ~/.bashrc
 
 # Download Pelias Repositories
 cd $TOOLS
