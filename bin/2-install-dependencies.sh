@@ -24,7 +24,7 @@ set -e
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends git unzip python python-pip python-dev build-essential gdal-bin rlwrap golang-go
 
-curl -sL https://deb.nodesource.com/sectup_4.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Create nodejs group for npm access
