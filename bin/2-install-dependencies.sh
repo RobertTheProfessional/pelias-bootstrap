@@ -22,10 +22,6 @@ chmod 2775 $TOOLS
 set -x
 set -e
 
-# Pull the Bootstrap from GitHub
-mkdir ~/Pelias && cd ~/Pelias
-git clone https://github.com/RobertTheProfessional/pelias-bootstrap
-
 # Create the Pelias resources folder
 mkdir $TOOLS && cd $TOOLS
 
@@ -44,8 +40,8 @@ apt-get install -y --no-install-recommends git unzip python python-pip python-de
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-git clone https://github.com/whosonfirst/go-whosonfirst-clone.git ~/.pelias/wof-clone
-cd ~/.pelias/wof-clone
+git clone https://github.com/whosonfirst/go-whosonfirst-clone.git $HOME/wof-clone
+cd $HOME/wof-clone
 make deps
 make bin
 
