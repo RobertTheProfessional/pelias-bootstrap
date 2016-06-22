@@ -28,13 +28,13 @@ curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Create nodejs group for npm access
-sudo addgroup nodejs
-
 if [ $(getent group nodejs) ]; then
   echo "nodejs group already exists"
 else
-  sudo usermod -a -G nodejs $(whoami)
+  sudo addgroup nodejs
 fi
+
+sudo usermod -a -G nodejs $(whoami)
 
 # Update npm global directory permissions
 sudo chown -R root:nodejs $(npm config get prefix) && sudo chmod -R 775 $(npm config get prefix)  
