@@ -16,5 +16,6 @@ rm -r $TOOLS
 rm -r $HOME/.pelias
 rm -r $HOME/pelias-bootstrap
 sudo rm /etc/sudoers.d/pelias-admin-user
+sudo delgroup nodejs
 apt-get purge -y git unzip python python-pip python-dev build-essential gdal-bin rlwrap golang-go
 apt-get clean
