@@ -4,8 +4,8 @@
 # Folder setup
 #=============
 BASE=/mnt
-TOOLS=$BASE/pelias/tools
-DATA=$BASE/pelias/data
+TOOLS=$HOME/.pelias
+DATA=$BASE/pelias/
 THREADS=6
 
 #=================
@@ -26,7 +26,8 @@ pelias schema#master create_index
 
 # Begin importing OpenAddresses
 # node $TOOLS/openaddresses/import --admin-values
-cd $TOOLS/openaddresses && bin/import $THREADS --admin-values
+cd $TOOLS/openaddresses
+(setsid bin/import $THREADS --admin-values > $HOME/openaddress-import.log &)
 
 # Begin importing OpenStreetMap Addresses
-pelias openstreetmap#master import
+(setsid pelias openstreetmap#master import > $HOME/openstreetmap-import.log &)

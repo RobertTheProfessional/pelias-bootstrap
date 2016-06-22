@@ -1,19 +1,19 @@
 #!/bin/bash
+set -x
+set -e
 
 #=============
 # Folder setup
 #=============
-#BASE=/mnt
-#TOOLS=$BASE/pelias/tools
 TOOLS=$HOME/.pelias
 
-#if [ -d $TOOLS ]; then
-    rm -rf $TOOLS/
-#fi
+if [ -d $TOOLS ]; then
+    echo "TOOLS EXISTS!" #rm -r $TOOLS/
+fi
 
-#mkdir -p $TOOLS
+mkdir -p $TOOLS
 
-#chmod 2775 $TOOLS
+chmod 2775 $TOOLS
 
 #=========================================
 # Install importers and their dependencies
@@ -22,30 +22,35 @@ TOOLS=$HOME/.pelias
 set -x
 set -e
 
+# Pull the Bootstrap from GitHub
+mkdir ~/Pelias && cd ~/Pelias
+git clone https://github.com/RobertTheProfessional/pelias-bootstrap
+
+# Create the Pelias resources folder
+mkdir $TOOLS && cd $TOOLS
+
+# Download Pelias Repositories
+for repository in schema api whosonfirst geonames openaddresses openstreetmap; do
+    git clone http://github.com/pelias/${repository}.git
+    pushd $repository > /dev/null
+    git checkout production # or staging, or remove this line to stay with master
+    npm install
+    popd > /dev/null
+done
+
 apt-get update
 apt-get install -y --no-install-recommends git unzip python python-pip python-dev build-essential gdal-bin rlwrap golang-go
-#rm -rf /var/lib/apt/lists/*
 
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-git clone https://github.com/whosonfirst/go-whosonfirst-clone.git $TOOLS/wof-clone
-cd $TOOLS/wof-clone
+git clone https://github.com/whosonfirst/go-whosonfirst-clone.git ~/.pelias/wof-clone
+cd ~/.pelias/wof-clone
 make deps
 make bin
 
-# we need a custom pelias dbclient version
-#git clone https://github.com/HSLdevcom/dbclient.git $TOOLS/dbclient
-#cd $TOOLS/dbclient
-#npm install
-# make it available for other pelias components
-#npm link
-
-#git clone https://github.com/pelias/openaddresses.git $TOOLS/openaddresses
-#cd $TOOLS/openaddresses
-#npm install
-# use custom dbclient
-#npm link pelias-dbclient
-
 # Install the Pelias-CLI
 npm install -g pelias-cli
+
+# Return to the original calling user
+exit
