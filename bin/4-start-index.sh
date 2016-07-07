@@ -6,7 +6,8 @@
 BASE=/mnt
 TOOLS=$HOME/.pelias
 DATA=$BASE/pelias/
-THREADS=6
+THREADS=$(nproc)
+THREADS=THREADS/2
 
 #=================
 # Index everything
@@ -27,7 +28,11 @@ pelias schema#master create_index
 # Begin importing OpenAddresses
 # node $TOOLS/openaddresses/import --admin-values
 cd $TOOLS/openaddresses
-(setsid bin/import $THREADS --admin-values > $HOME/openaddress-import.log &)
+git checkout fix-capitalization
+setsid bin/import $THREADS --admin-values > $HOME/openaddress-import.log &
 
 # Begin importing OpenStreetMap Addresses
-(setsid pelias openstreetmap#master import > $HOME/openstreetmap-import.log &)
+setsid pelias openstreetmap#master import --admin-values > $HOME/openstreetmap-import.log &
+
+# Begin importing Geonames Addresses
+setsid pelias geonames import -i US

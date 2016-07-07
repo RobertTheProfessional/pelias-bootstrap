@@ -24,7 +24,7 @@ set -e
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends git unzip python python-pip python-dev build-essential gdal-bin rlwrap golang-go
 
-curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Create nodejs group for npm access
@@ -38,8 +38,8 @@ sudo usermod -a -G nodejs $(whoami)
 
 # Update npm global directory
 mkdir $HOME/.npm-packages
-echo 'prefix=~/.npm-packages' > ~/.npmrc
-echo 'NPM_PACKAGES="~/.npm-packages"' >> ~/.bashrc
+echo 'prefix=${HOME}/.npm-packages' > ~/.npmrc
+echo 'NPM_PACKAGES="${HOME}/.npm-packages"' >> ~/.bashrc
 echo 'PATH="$NPM_PACKAGES/bin:$PATH"' >> ~/.bashrc
 
 # Download Pelias Repositories
@@ -52,8 +52,8 @@ for repository in schema api whosonfirst geonames openaddresses openstreetmap; d
     popd > /dev/null
 done
 
-git clone https://github.com/whosonfirst/go-whosonfirst-clone.git $HOME/wof-clone
-cd $HOME/wof-clone
+git clone https://github.com/whosonfirst/go-whosonfirst-clone.git $HOME/.pelias/wof-clone
+cd $HOME/.pelias/wof-clone
 make deps
 make bin
 
